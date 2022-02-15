@@ -8,6 +8,7 @@ import com.nttdata.web.rest.errors.BadRequestAlertException;
 import com.nttdata.web.util.HeaderUtil;
 import com.nttdata.web.util.ResponseUtil;
 
+import org.bson.types.ObjectId;
 import org.eclipse.microprofile.config.inject.ConfigProperty;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -92,7 +93,7 @@ public class BlogPostResource {
     @Path("/{id}")
     public Response deleteBlogPost(@PathParam("id") String id) {
         log.debug("REST request to delete BlogPost : {}", id);
-        blogPostRepository.findByIdOptional(id).ifPresent(blogPost -> {
+        blogPostRepository.findByIdOptional(new ObjectId(id)).ifPresent(blogPost -> {
             blogPostRepository.delete(blogPost);
         });
         var response = Response.noContent();
@@ -129,7 +130,7 @@ public class BlogPostResource {
 
     public Response getBlogPost(@PathParam("id") String id) {
         log.debug("REST request to get BlogPost : {}", id);
-        Optional<BlogPost> blogPost = blogPostRepository.findByIdOptional(id);
+        Optional<BlogPost> blogPost = blogPostRepository.findByIdOptional(new ObjectId(id));
         return ResponseUtil.wrapOrNotFound(blogPost);
     }
 }

@@ -30,7 +30,7 @@ public class BlogPost extends PanacheMongoEntityBase implements Serializable {
 
     public byte[] figure;
 
-    @Field("figure_content_type")
+//    @Field("figure_content_type")
       public String figureContentType;
 
      public String content;
@@ -85,7 +85,7 @@ public class BlogPost extends PanacheMongoEntityBase implements Serializable {
             ", title='" + title + "'" +
             ", summary='" + summary + "'" +
             ", figure='" + figure + "'" +
-            ", figureContentType='" + figureContentType() + "'" +
+            ", figureContentType='" + figureContentType + "'" +
             ", content='" + content + "'" +
             ", category='" + category + "'" +
             ", slug='" + slug + "'" +
