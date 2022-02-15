@@ -2,34 +2,34 @@ package com.nttdata.domain;
 
 import com.nttdata.config.Constants;
 import io.quarkus.cache.CacheResult;
-import io.quarkus.mongodb.panache.MongoEntity;
 import io.quarkus.mongodb.panache.PanacheMongoEntityBase;
+import io.quarkus.mongodb.panache.common.MongoEntity;
+import io.quarkus.panache.common.Page;
 import org.bson.codecs.pojo.annotations.BsonId;
 import org.bson.codecs.pojo.annotations.BsonIgnore;
-import java.io.Serializable;
-import java.time.Instant;
-import java.util.HashSet;
-import io.quarkus.panache.common.Page;
-import java.util.List;
-import java.util.Optional;
-import java.util.Set;
+
 import javax.json.bind.annotation.JsonbTransient;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
+import java.io.Serializable;
+import java.time.Instant;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Optional;
+import java.util.Set;
 
 /**
  * A user.
  */
-@MongoEntity(collection="jhi_user")
+@MongoEntity(collection = "jhi_user")
 public class User extends PanacheMongoEntityBase implements Serializable {
-    private static final long serialVersionUID = 1L;
     @BsonIgnore
     public static final String USERS_BY_EMAIL_CACHE = "usersByEmail";
     @BsonIgnore
     public static final String USERS_BY_LOGIN_CACHE = "usersByLogin";
-
+    private static final long serialVersionUID = 1L;
     @BsonId
     public String id;
 
@@ -92,54 +92,6 @@ public class User extends PanacheMongoEntityBase implements Serializable {
     @JsonbTransient
     public Instant lastModifiedDate = Instant.now();
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) {
-            return true;
-        }
-        if (!(o instanceof User)) {
-            return false;
-        }
-        return id != null && id.equals(((User) o).id);
-    }
-
-    @Override
-    public int hashCode() {
-        return 31;
-    }
-
-    @Override
-    public String toString() {
-        return (
-            "User{" +
-            "login='" +
-            login +
-            '\'' +
-            ", firstName='" +
-            firstName +
-            '\'' +
-            ", lastName='" +
-            lastName +
-            '\'' +
-            ", email='" +
-            email +
-            '\'' +
-            ", imageUrl='" +
-            imageUrl +
-            '\'' +
-            ", activated='" +
-            activated +
-            '\'' +
-            ", langKey='" +
-            langKey +
-            '\'' +
-            ", activationKey='" +
-            activationKey +
-            '\'' +
-            "}"
-        );
-    }
-
     public static Optional<User> findOneByActivationKey(String activationKey) {
         return find("activationKey", activationKey).firstResultOptional();
     }
@@ -178,5 +130,53 @@ public class User extends PanacheMongoEntityBase implements Serializable {
 
     public static List<User> findAllByLoginNot(Page page, String login) {
         return find("login != ?1", login).page(page).list();
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (!(o instanceof User)) {
+            return false;
+        }
+        return id != null && id.equals(((User) o).id);
+    }
+
+    @Override
+    public int hashCode() {
+        return 31;
+    }
+
+    @Override
+    public String toString() {
+        return (
+            "User{" +
+                "login='" +
+                login +
+                '\'' +
+                ", firstName='" +
+                firstName +
+                '\'' +
+                ", lastName='" +
+                lastName +
+                '\'' +
+                ", email='" +
+                email +
+                '\'' +
+                ", imageUrl='" +
+                imageUrl +
+                '\'' +
+                ", activated='" +
+                activated +
+                '\'' +
+                ", langKey='" +
+                langKey +
+                '\'' +
+                ", activationKey='" +
+                activationKey +
+                '\'' +
+                "}"
+        );
     }
 }

@@ -1,6 +1,6 @@
-package com.nttdata.repository;
+package com.nttdata.entities.blogpost.repository;
 
-import com.nttdata.domain.BlogPost;
+import com.nttdata.entities.blogpost.domain.BlogPost;
 import io.quarkus.mongodb.panache.PanacheMongoRepository;
 import javax.enterprise.context.ApplicationScoped;
 

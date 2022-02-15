@@ -11,10 +11,10 @@
 
     <properties>
         <!-- Build properties -->
-        <maven.version>3.6.3</maven.version>
+        <maven.version>3.8.3</maven.version>
         <java.version>11</java.version>
-        <node.version>v12.13.1</node.version>
-        <npm.version>6.13.4</npm.version>
+        <node.version>v14.18.2</node.version>
+        <npm.version>8.3.0</npm.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
         <project.testresult.directory>${project.build.directory}/test-results</project.testresult.directory>
@@ -23,33 +23,31 @@
         <maven.compiler.target>${java.version}</maven.compiler.target>
 
         <!-- Dependency properties -->
-        <quarkus.platform.version>1.12.1.Final</quarkus.platform.version>
-        <mapstruct.version>1.3.1.Final</mapstruct.version>
-        <archunit-junit5.version>0.12.0</archunit-junit5.version>
+        <quarkus.platform.version>2.7.1.Final</quarkus.platform.version>
+        <mapstruct.version>1.4.2.Final</mapstruct.version>
+        <archunit-junit5.version>0.22.0</archunit-junit5.version>
 
         <!-- Plugin versions -->
         <maven-clean-plugin.version>3.1.0</maven-clean-plugin.version>
         <maven-compiler-plugin.version>3.8.1</maven-compiler-plugin.version>
-        <maven-javadoc-plugin.version>3.1.1</maven-javadoc-plugin.version>
+        <maven-javadoc-plugin.version>3.3.1</maven-javadoc-plugin.version>
         <maven-eclipse-plugin.version>2.10</maven-eclipse-plugin.version>
-        <maven-enforcer-plugin.version>3.0.0-M3</maven-enforcer-plugin.version>
-        <maven-failsafe-plugin.version>3.0.0-M4</maven-failsafe-plugin.version>
+        <maven-enforcer-plugin.version>3.0.0</maven-enforcer-plugin.version>
+        <maven-failsafe-plugin.version>3.0.0-M5</maven-failsafe-plugin.version>
         <maven-idea-plugin.version>2.2.1</maven-idea-plugin.version>
-        <maven-resources-plugin.version>3.1.0</maven-resources-plugin.version>
-        <maven-surefire-plugin.version>3.0.0-M4</maven-surefire-plugin.version>
-        <maven-checkstyle.version>3.1.0</maven-checkstyle.version>
+        <maven-resources-plugin.version>3.2.0</maven-resources-plugin.version>
+        <maven-surefire-plugin.version>3.0.0-M5</maven-surefire-plugin.version>
+        <maven-checkstyle.version>3.1.2</maven-checkstyle.version>
         <frontend-maven-plugin.version>1.6</frontend-maven-plugin.version>
-        <git-commit-id-plugin.version>4.0.0</git-commit-id-plugin.version>
-        <jacoco-maven-plugin.version>0.8.5</jacoco-maven-plugin.version>
+        <git-commit-id-plugin.version>5.0.0</git-commit-id-plugin.version>
+        <jacoco-maven-plugin.version>0.8.7</jacoco-maven-plugin.version>
         <lifecycle-mapping.version>1.0.0</lifecycle-mapping.version>
         <properties-maven-plugin.version>1.0.0</properties-maven-plugin.version>
         <sonar-maven-plugin.version>3.7.0.1746</sonar-maven-plugin.version>
-        <quarkus-plugin.version>1.12.1.Final</quarkus-plugin.version>
-        <mongock-bom.version>4.1.19</mongock-bom.version>
-        <mongodb-driver-sync.version>4.1.1</mongodb-driver-sync.version>
+        <quarkus-plugin.version>2.7.1.Final</quarkus-plugin.version>
 
         <!-- Plugin properties -->
-        <checkstyle.version>8.27</checkstyle.version>
+        <checkstyle.version>9.2.1</checkstyle.version>
         <jacoco.utReportFolder>${project.build.directory}/jacoco/test</jacoco.utReportFolder>
         <jacoco.utReportFile>${jacoco.utReportFolder}/test.exec</jacoco.utReportFile>
         <!-- <jacoco.itReportFolder>${project.build.directory}/jacoco/integrationTest</jacoco.itReportFolder> -->
@@ -64,15 +62,8 @@
         <dependencies>
             <dependency>
                 <groupId>io.quarkus</groupId>
-                <artifactId>quarkus-universe-bom</artifactId>
+                <artifactId>quarkus-bom</artifactId>
                 <version>${quarkus.platform.version}</version>
-                <type>pom</type>
-                <scope>import</scope>
-            </dependency>
-            <dependency>
-                <groupId>com.github.cloudyrock.mongock</groupId>
-                <artifactId>mongock-bom</artifactId>
-                <version>${mongock-bom.version}</version>
                 <type>pom</type>
                 <scope>import</scope>
             </dependency>
@@ -101,22 +92,10 @@
             <artifactId>quarkus-mongodb-panache</artifactId>
         </dependency>
         <dependency>
-            <groupId>com.github.cloudyrock.mongock</groupId>
-            <artifactId>mongock-standalone</artifactId>
+            <groupId>io.quarkus</groupId>
+            <artifactId>quarkus-liquibase-mongodb</artifactId>
         </dependency>
-        <dependency>
-            <groupId>com.github.cloudyrock.mongock</groupId>
-            <artifactId>mongodb-sync-v4-driver</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.mongodb</groupId>
-            <artifactId>mongodb-driver-sync</artifactId>
-            <version>${mongodb-driver-sync.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>org.apache.commons</groupId>
-            <artifactId>commons-lang3</artifactId>
-        </dependency>
+
         <dependency>
             <groupId>io.quarkus</groupId>
             <artifactId>quarkus-elytron-security</artifactId>

@@ -8,17 +8,15 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.Matchers.*;
 
 import com.nttdata.TestUtil;
-import com.nttdata.domain.BlogPost;
+import com.nttdata.entities.blogpost.domain.BlogPost;
 import io.quarkus.test.junit.QuarkusTest;
 import io.restassured.RestAssured;
 import io.restassured.common.mapper.TypeRef;
+import org.bson.types.ObjectId;
 import org.junit.jupiter.api.*;
 
-import javax.inject.Inject;
-
 import java.util.List;
-import java.nio.ByteBuffer;
-    import java.time.LocalDate;
+import java.time.LocalDate;
 import java.time.Instant;
 import java.time.ZoneId;
 import java.time.temporal.ChronoUnit;
@@ -38,8 +36,8 @@ public class BlogPostResourceTest {
     private static final String DEFAULT_SUMMARY = "AAAAAAAAAA";
     private static final String UPDATED_SUMMARY = "BBBBBBBBBB";
 
-    private static final byte[] DEFAULT_FIGURE = TestUtil.createByteArray(1, "0");
-    private static final byte[] UPDATED_FIGURE = TestUtil.createByteArray(1, "1");
+    private static final byte[] DEFAULT_FIGURE = new byte[]{ 0 };
+    private static final byte[] UPDATED_FIGURE = new byte[]{ 1 };
     private static final String DEFAULT_FIGURE_CONTENT_TYPE = "image/jpg";
     private static final String UPDATED_FIGURE_CONTENT_TYPE = "image/png";
 
@@ -203,7 +201,7 @@ public class BlogPostResourceTest {
             .size();
 
         // Create the BlogPost with an existing ID
-        blogPost.id = "1";
+        blogPost.id = new ObjectId("1") ;
 
         // An entity with an existing ID cannot be created, so this API call must fail
         given()
@@ -646,7 +644,7 @@ public class BlogPostResourceTest {
             .statusCode(OK.getStatusCode())
             .contentType(APPLICATION_JSON)
             .body("id", is(blogPost.id))
-            
+
                 .body("title", is(DEFAULT_TITLE))
                 .body("summary", is(DEFAULT_SUMMARY.toString()))
                 .body("figure", is(DEFAULT_FIGURE.toString()))

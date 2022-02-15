@@ -1,32 +1,36 @@
 package com.nttdata.config;
 
-import io.quarkus.arc.config.ConfigProperties;
+import io.smallrye.config.ConfigMapping;
 
-@ConfigProperties(prefix = "jhipster")
-public class JHipsterProperties {
-    public Security security;
-    public Mail mail;
+@ConfigMapping(prefix = "jhipster")
+public interface JHipsterProperties {
+    Security security();
 
-    public static class Security {
-        public Authentication authentication;
+    Mail mail();
 
-        public static class Authentication {
-            public Jwt jwt;
+    interface Security {
+        Authentication authentication();
 
-            public static class Jwt {
-                public String issuer;
-                public long tokenValidityInSeconds;
-                public long tokenValidityInSecondsForRememberMe;
-                public PrivateKey privateKey;
+        interface Authentication {
+            Jwt jwt();
 
-                public static class PrivateKey {
-                    public String location;
+            interface Jwt {
+                String issuer();
+
+                long tokenValidityInSeconds();
+
+                long tokenValidityInSecondsForRememberMe();
+
+                PrivateKey privateKey();
+
+                interface PrivateKey {
+                    String location();
                 }
             }
         }
     }
 
-    public static class Mail {
-        public String baseUrl;
+    interface Mail {
+        String baseUrl();
     }
 }

@@ -1,7 +1,7 @@
-package com.nttdata.domain;
+package com.nttdata.entities.blogpost.domain;
 
-import io.quarkus.mongodb.panache.MongoEntity;
-import io.quarkus.mongodb.panache.PanacheMongoEntityBase;
+import io.quarkus.mongodb.panache.PanacheMongoEntity;
+import io.quarkus.mongodb.panache.common.MongoEntity;
 import io.quarkus.runtime.annotations.RegisterForReflection;
 import org.bson.codecs.pojo.annotations.BsonId;
 
@@ -19,12 +19,9 @@ import java.time.LocalDate;
  */
 @MongoEntity(collection = "blog_post")
 @RegisterForReflection
-public class BlogPost extends PanacheMongoEntityBase implements Serializable {
+public class BlogPost extends PanacheMongoEntity implements Serializable {
 
     private static final long serialVersionUID = 1L;
-
-    @BsonId
-    public String id;
 
     @NotNull
     @Size(max = 80)

@@ -1,19 +1,19 @@
 package com.nttdata.domain;
 
-import io.quarkus.mongodb.panache.MongoEntity;
 import io.quarkus.mongodb.panache.PanacheMongoEntityBase;
-import io.quarkus.mongodb.panache.PanacheMongoEntityBase;
-import org.bson.codecs.pojo.annotations.BsonId;
+import io.quarkus.mongodb.panache.common.MongoEntity;
 import io.quarkus.runtime.annotations.RegisterForReflection;
-import java.io.Serializable;
-import java.util.Objects;
+import org.bson.codecs.pojo.annotations.BsonId;
+
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
+import java.io.Serializable;
+import java.util.Objects;
 
 /**
  * An authority (a security role).
  */
-@MongoEntity(collection="jhi_authority")
+@MongoEntity(collection = "jhi_authority")
 @RegisterForReflection
 public class Authority extends PanacheMongoEntityBase implements Serializable {
     private static final long serialVersionUID = 1L;

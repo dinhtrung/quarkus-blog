@@ -3,38 +3,33 @@ package com.nttdata.service;
 import com.nttdata.config.JHipsterProperties;
 import com.nttdata.domain.User;
 import io.quarkus.mailer.MailTemplate;
-import io.quarkus.qute.api.ResourcePath;
-import java.util.concurrent.CompletionStage;
-import javax.enterprise.context.ApplicationScoped;
-import javax.inject.Inject;
+import io.quarkus.qute.Location;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import javax.enterprise.context.ApplicationScoped;
+import javax.inject.Inject;
+import java.util.concurrent.CompletionStage;
 
 /**
  * Service for sending emails.
  */
 @ApplicationScoped
 public class MailService {
-    private final Logger log = LoggerFactory.getLogger(MailService.class);
-
     private static final String USER = "user";
-
     private static final String BASE_URL = "baseUrl";
-
     final JHipsterProperties jHipsterProperties;
-
     final MailTemplate activationEmail;
-
     final MailTemplate creationEmail;
-
     final MailTemplate passwordResetEmail;
+    private final Logger log = LoggerFactory.getLogger(MailService.class);
 
     @Inject
     public MailService(
         JHipsterProperties jHipsterProperties,
-        @ResourcePath("mail/activationEmail") MailTemplate activationEmail,
-        @ResourcePath("mail/creationEmail") MailTemplate creationEmail,
-        @ResourcePath("mail/passwordResetEmail") MailTemplate passwordResetEmail
+        @Location("mail/activationEmail") MailTemplate activationEmail,
+        @Location("mail/creationEmail") MailTemplate creationEmail,
+        @Location("mail/passwordResetEmail") MailTemplate passwordResetEmail
     ) {
         this.jHipsterProperties = jHipsterProperties;
         this.activationEmail = activationEmail;
@@ -46,7 +41,7 @@ public class MailService {
         return template
             .to(user.email)
             .subject(subject)
-            .data(BASE_URL, jHipsterProperties.mail.baseUrl)
+            .data(BASE_URL, jHipsterProperties.mail().baseUrl())
             .data(USER, user)
             .send()
             .subscribeAsCompletionStage()

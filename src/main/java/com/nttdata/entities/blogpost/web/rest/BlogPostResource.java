@@ -1,7 +1,7 @@
-package com.nttdata.web.rest;
+package com.nttdata.entities.blogpost.web.rest;
 
-import com.nttdata.domain.BlogPost;
-import com.nttdata.repository.BlogPostRepository;
+import com.nttdata.entities.blogpost.domain.BlogPost;
+import com.nttdata.entities.blogpost.repository.BlogPostRepository;
 import com.nttdata.service.Paged;
 import com.nttdata.web.rest.errors.BadRequestAlertException;
 import com.nttdata.web.rest.vm.PageRequestVM;
@@ -27,7 +27,7 @@ import java.util.Optional;
 import static javax.ws.rs.core.UriBuilder.fromPath;
 
 /**
- * REST controller for managing {@link com.nttdata.domain.BlogPost}.
+ * REST controller for managing {@link BlogPost}.
  */
 @Path("/api/blog-posts")
 @Produces(MediaType.APPLICATION_JSON)
@@ -58,8 +58,8 @@ public class BlogPostResource {
         }
         blogPostRepository.persistOrUpdate(blogPost);
         BlogPost result = BlogPost.findById(blogPost.id);
-        var response = Response.created(fromPath(uriInfo.getPath()).path(result.id).build()).entity(result);
-        HeaderUtil.createEntityCreationAlert(applicationName, true, ENTITY_NAME, result.id).forEach(response::header);
+        var response = Response.created(fromPath(uriInfo.getPath()).path(result.id.toHexString()).build()).entity(result);
+        HeaderUtil.createEntityCreationAlert(applicationName, true, ENTITY_NAME, result.id.toHexString()).forEach(response::header);
         return response.build();
     }
 
@@ -79,7 +79,7 @@ public class BlogPostResource {
         }
         blogPostRepository.persistOrUpdate(blogPost);
         var response = Response.ok().entity(blogPost);
-        HeaderUtil.createEntityUpdateAlert(applicationName, true, ENTITY_NAME, blogPost.id).forEach(response::header);
+        HeaderUtil.createEntityUpdateAlert(applicationName, true, ENTITY_NAME, blogPost.id.toHexString()).forEach(response::header);
         return response.build();
     }
 
