@@ -1,11 +1,15 @@
 package com.nttdata.domain;
-import javax.json.bind.annotation.JsonbTransient;
-import io.quarkus.runtime.annotations.RegisterForReflection;
+
 import io.quarkus.mongodb.panache.MongoEntity;
 import io.quarkus.mongodb.panache.PanacheMongoEntityBase;
+import io.quarkus.runtime.annotations.RegisterForReflection;
 import org.bson.codecs.pojo.annotations.BsonId;
-import javax.validation.constraints.*;
 
+import javax.json.bind.annotation.JsonbProperty;
+import javax.validation.constraints.Max;
+import javax.validation.constraints.Min;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 import java.io.Serializable;
 import java.time.Instant;
 import java.time.LocalDate;
@@ -13,7 +17,7 @@ import java.time.LocalDate;
 /**
  * A BlogPost.
  */
-@MongoEntity(collection="blog_post")
+@MongoEntity(collection = "blog_post")
 @RegisterForReflection
 public class BlogPost extends PanacheMongoEntityBase implements Serializable {
 
@@ -26,14 +30,14 @@ public class BlogPost extends PanacheMongoEntityBase implements Serializable {
     @Size(max = 80)
     public String title;
 
-     public String summary;
+    public String summary;
 
     public byte[] figure;
 
-//    @Field("figure_content_type")
-      public String figureContentType;
+    @JsonbProperty("figure_content_type")
+    public String figureContentType;
 
-     public String content;
+    public String content;
 
     public String category;
 

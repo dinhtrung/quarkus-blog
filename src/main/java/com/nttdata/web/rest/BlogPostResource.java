@@ -1,29 +1,30 @@
 package com.nttdata.web.rest;
 
-import static javax.ws.rs.core.UriBuilder.fromPath;
-
 import com.nttdata.domain.BlogPost;
 import com.nttdata.repository.BlogPostRepository;
+import com.nttdata.service.Paged;
 import com.nttdata.web.rest.errors.BadRequestAlertException;
+import com.nttdata.web.rest.vm.PageRequestVM;
+import com.nttdata.web.rest.vm.SortRequestVM;
 import com.nttdata.web.util.HeaderUtil;
+import com.nttdata.web.util.PaginationUtil;
 import com.nttdata.web.util.ResponseUtil;
-
 import org.bson.types.ObjectId;
 import org.eclipse.microprofile.config.inject.ConfigProperty;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import com.nttdata.service.Paged;
-import com.nttdata.web.rest.vm.PageRequestVM;
-import com.nttdata.web.rest.vm.SortRequestVM;
-import com.nttdata.web.util.PaginationUtil;
 
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
 import javax.validation.Valid;
 import javax.ws.rs.*;
-import javax.ws.rs.core.*;
-import java.util.List;
+import javax.ws.rs.core.Context;
+import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response;
+import javax.ws.rs.core.UriInfo;
 import java.util.Optional;
+
+import static javax.ws.rs.core.UriBuilder.fromPath;
 
 /**
  * REST controller for managing {@link com.nttdata.domain.BlogPost}.
@@ -34,16 +35,15 @@ import java.util.Optional;
 @ApplicationScoped
 public class BlogPostResource {
 
-    private final Logger log = LoggerFactory.getLogger(BlogPostResource.class);
-
     private static final String ENTITY_NAME = "blogPost";
-
+    private final Logger log = LoggerFactory.getLogger(BlogPostResource.class);
     @ConfigProperty(name = "application.name")
     String applicationName;
 
 
     @Inject
     BlogPostRepository blogPostRepository;
+
     /**
      * {@code POST  /blog-posts} : Create a new blogPost.
      *

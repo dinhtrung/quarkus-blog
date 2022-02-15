@@ -2,15 +2,15 @@ package com.nttdata.service.dto;
 
 import com.nttdata.config.Constants;
 import com.nttdata.domain.User;
-
 import io.quarkus.runtime.annotations.RegisterForReflection;
-import java.time.Instant;
-import java.util.Set;
-import java.util.stream.Collectors;
+
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
+import java.time.Instant;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 /**
  * A DTO representing a user, with his authorities.
@@ -76,38 +76,38 @@ public class UserDTO {
     public String toString() {
         return (
             "UserDTO{" +
-            "login='" +
-            login +
-            '\'' +
-            ", firstName='" +
-            firstName +
-            '\'' +
-            ", lastName='" +
-            lastName +
-            '\'' +
-            ", email='" +
-            email +
-            '\'' +
-            ", imageUrl='" +
-            imageUrl +
-            '\'' +
-            ", activated=" +
-            activated +
-            ", langKey='" +
-            langKey +
-            '\'' +
-            ", createdBy=" +
-            createdBy +
-            ", createdDate=" +
-            createdDate +
-            ", lastModifiedBy='" +
-            lastModifiedBy +
-            '\'' +
-            ", lastModifiedDate=" +
-            lastModifiedDate +
-            ", authorities=" +
-            authorities +
-            "}"
+                "login='" +
+                login +
+                '\'' +
+                ", firstName='" +
+                firstName +
+                '\'' +
+                ", lastName='" +
+                lastName +
+                '\'' +
+                ", email='" +
+                email +
+                '\'' +
+                ", imageUrl='" +
+                imageUrl +
+                '\'' +
+                ", activated=" +
+                activated +
+                ", langKey='" +
+                langKey +
+                '\'' +
+                ", createdBy=" +
+                createdBy +
+                ", createdDate=" +
+                createdDate +
+                ", lastModifiedBy='" +
+                lastModifiedBy +
+                '\'' +
+                ", lastModifiedDate=" +
+                lastModifiedDate +
+                ", authorities=" +
+                authorities +
+                "}"
         );
     }
 }
