@@ -16,7 +16,7 @@ import static org.assertj.core.api.Assertions.assertThat;
  * Integration tests for {@link MailService}.
  */
 @QuarkusTest
-public class MailServiceIT {
+class MailServiceIT {
     @Inject
     MockMailbox mailbox;
 

@@ -2,9 +2,9 @@ package com.nttdata;
 
 import de.flapdoodle.embed.mongo.MongodExecutable;
 import de.flapdoodle.embed.mongo.MongodStarter;
-import de.flapdoodle.embed.mongo.config.ImmutableMongodConfig;
 import de.flapdoodle.embed.mongo.config.MongodConfig;
 import de.flapdoodle.embed.mongo.config.Net;
+import de.flapdoodle.embed.mongo.config.Storage;
 import de.flapdoodle.embed.mongo.distribution.Version;
 import de.flapdoodle.embed.process.runtime.Network;
 import io.quarkus.test.common.QuarkusTestResourceLifecycleManager;
@@ -22,14 +22,16 @@ public class MongoDbTestResource implements QuarkusTestResourceLifecycleManager 
         int port = 37017;
 
         try {
-            MongodConfig mongodConfig = ImmutableMongodConfig.builder()
-                .version(Version.Main.PRODUCTION)
+            MongodConfig mongodConfig = MongodConfig.builder()
+                .version(Version.Main.DEVELOPMENT)
                 .net(new Net(ip, port, Network.localhostIsIPv6()))
+                .replication(new Storage())
                 .build();
 
             MongodStarter starter = MongodStarter.getDefaultInstance();
             mongodExecutable = starter.prepare(mongodConfig);
             mongodExecutable.start();
+
             return Collections.emptyMap();
         } catch (IOException e) {
             throw new RuntimeException(e);

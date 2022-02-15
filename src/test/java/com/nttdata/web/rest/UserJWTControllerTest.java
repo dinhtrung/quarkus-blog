@@ -20,7 +20,7 @@ import javax.ws.rs.core.HttpHeaders;
 import org.junit.jupiter.api.*;
 
 @QuarkusTest
-public class UserJWTControllerTest {
+class UserJWTControllerTest {
 
 
     @Inject
@@ -55,7 +55,7 @@ public class UserJWTControllerTest {
     }
 
     @Test
-    public void testAuthorize() {
+    void testAuthorize() {
         var user = new ManagedUserVM();
         user.login = "user-jwt-controller";
         user.email = "user-jwt-controller@example.com";
@@ -84,7 +84,7 @@ public class UserJWTControllerTest {
     }
 
     @Test
-    public void testAuthorizeWithRememberMe() {
+    void testAuthorizeWithRememberMe() {
         var user = new ManagedUserVM();
         user.login = "user-jwt-controller-remember-me";
         user.email = "user-jwt-controller-remember-me@example.com";
@@ -115,7 +115,7 @@ public class UserJWTControllerTest {
     }
 
     @Test
-    public void testAuthorizeFails() {
+    void testAuthorizeFails() {
         var login = new LoginVM();
         login.username = "wrong-user";
         login.password = "wrong password";

@@ -1,15 +1,5 @@
 package com.nttdata.web.rest;
 
-import static io.restassured.RestAssured.get;
-import static io.restassured.RestAssured.given;
-import static io.restassured.config.ObjectMapperConfig.objectMapperConfig;
-import static javax.ws.rs.core.MediaType.APPLICATION_JSON;
-import static javax.ws.rs.core.MediaType.TEXT_PLAIN;
-import static javax.ws.rs.core.Response.Status.*;
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.hamcrest.Matchers.*;
-import static org.junit.jupiter.api.Assertions.fail;
-
 import com.nttdata.TestUtil;
 import com.nttdata.config.Constants;
 import com.nttdata.domain.User;
@@ -24,17 +14,29 @@ import io.quarkus.mailer.Mail;
 import io.quarkus.mailer.MockMailbox;
 import io.quarkus.test.junit.QuarkusTest;
 import io.restassured.RestAssured;
+import org.apache.commons.lang3.RandomStringUtils;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+
+import javax.inject.Inject;
+import javax.ws.rs.core.HttpHeaders;
+import javax.ws.rs.core.MediaType;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.regex.Pattern;
-import javax.inject.Inject;
-import javax.ws.rs.core.HttpHeaders;
-import javax.ws.rs.core.MediaType;
 
-import org.apache.commons.lang3.RandomStringUtils;
-import org.junit.jupiter.api.*;
+import static io.restassured.RestAssured.get;
+import static io.restassured.RestAssured.given;
+import static io.restassured.config.ObjectMapperConfig.objectMapperConfig;
+import static javax.ws.rs.core.MediaType.APPLICATION_JSON;
+import static javax.ws.rs.core.MediaType.TEXT_PLAIN;
+import static javax.ws.rs.core.Response.Status.*;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.hamcrest.Matchers.*;
+import static org.junit.jupiter.api.Assertions.fail;
 
 @QuarkusTest
 public class AccountResourceTest {
@@ -43,16 +45,15 @@ public class AccountResourceTest {
     @Inject
     MockMailbox mailbox;
 
-    @BeforeEach
-    void init() {
-        mailbox.clear();
-    }
-
-
     @BeforeAll
     static void jsonMapper() {
         RestAssured.config =
             RestAssured.config().objectMapperConfig(objectMapperConfig().defaultObjectMapper(TestUtil.jsonbObjectMapper()));
+    }
+
+    @BeforeEach
+    void init() {
+        mailbox.clear();
     }
 
     private void registerUser(ManagedUserVM user) {
@@ -106,12 +107,12 @@ public class AccountResourceTest {
     }
 
     @Test
-    public void testNonAuthenticatedUser() {
+    void testNonAuthenticatedUser() {
         given().accept(MediaType.TEXT_PLAIN).get("/api/authenticate").then().statusCode(OK.getStatusCode()).body(is(emptyString()));
     }
 
     @Test
-    public void testAuthenticatedUser() {
+    void testAuthenticatedUser() {
         var user = new ManagedUserVM();
         user.login = "test";
         user.email = "test@example.com";
@@ -131,7 +132,7 @@ public class AccountResourceTest {
     }
 
     @Test
-    public void testGetExistingAccount() {
+    void testGetExistingAccount() {
         var user = new ManagedUserVM();
         user.login = "test";
         user.password = "test";
@@ -163,12 +164,12 @@ public class AccountResourceTest {
     }
 
     @Test
-    public void testGetUnknownAccount() {
+    void testGetUnknownAccount() {
         given().contentType(APPLICATION_JSON).accept(APPLICATION_JSON).get("/api/account").then().statusCode(UNAUTHORIZED.getStatusCode());
     }
 
     @Test
-    public void testRegisterValid() {
+    void testRegisterValid() {
         var validUser = new ManagedUserVM();
         validUser.login = "test-register-valid";
         validUser.password = "password";
@@ -186,7 +187,7 @@ public class AccountResourceTest {
     }
 
     @Test
-    public void testRegisterInvalidLogin() {
+    void testRegisterInvalidLogin() {
         var invalidUser = new ManagedUserVM();
         invalidUser.login = "funky-log!n"; // <-- invalid
         invalidUser.password = "password";
@@ -210,7 +211,7 @@ public class AccountResourceTest {
     }
 
     @Test
-    public void testRegisterInvalidEmail() {
+    void testRegisterInvalidEmail() {
         var invalidUser = new ManagedUserVM();
         invalidUser.login = "bob";
         invalidUser.password = "password";
@@ -234,7 +235,7 @@ public class AccountResourceTest {
     }
 
     @Test
-    public void testRegisterInvalidPassword() {
+    void testRegisterInvalidPassword() {
         var invalidUser = new ManagedUserVM();
         invalidUser.login = "bob";
         invalidUser.password = "123"; // password with only 3 digits
@@ -258,7 +259,7 @@ public class AccountResourceTest {
     }
 
     @Test
-    public void testRegisterNullPassword() {
+    void testRegisterNullPassword() {
         var invalidUser = new ManagedUserVM();
         invalidUser.login = "bob";
         invalidUser.password = null; // invalid null password
@@ -282,7 +283,7 @@ public class AccountResourceTest {
     }
 
     @Test
-    public void testRegisterDuplicateLogin() {
+    void testRegisterDuplicateLogin() {
         // First registration
         var firstUser = new ManagedUserVM();
         firstUser.login = "alice";
@@ -339,7 +340,7 @@ public class AccountResourceTest {
     }
 
     @Test
-    public void testRegisterDuplicateEmail() {
+    void testRegisterDuplicateEmail() {
         // First registration
         var firstUser = new ManagedUserVM();
         firstUser.login = "test-register-duplicate-email";
@@ -431,7 +432,7 @@ public class AccountResourceTest {
 
     //    @Test
     //    @Transactional
-    //    public void testRegisterAdminIsIgnored() throws Exception {
+    //    void testRegisterAdminIsIgnored() throws Exception {
     //        ManagedUserVM validUser = new ManagedUserVM();
     //        validUser.setLogin("badguy");
     //        validUser.setPassword("password");
@@ -456,7 +457,7 @@ public class AccountResourceTest {
     //    }
     //
     @Test
-    public void testActivateAccount() throws Exception {
+    void testActivateAccount() throws Exception {
         var user = new ManagedUserVM();
         user.login = "test";
         user.email = "test@example.com";
@@ -470,13 +471,13 @@ public class AccountResourceTest {
     }
 
     @Test
-    public void testActivateAccountWithWrongKey() throws Exception {
+    void testActivateAccountWithWrongKey() throws Exception {
         //Activating user
         given().when().get("/api/activate?key={key}", "wrongActivationKey").then().statusCode(INTERNAL_SERVER_ERROR.getStatusCode());
     }
 
     @Test
-    public void testSaveAccount() {
+    void testSaveAccount() {
         var user = new ManagedUserVM();
         user.login = "save-account";
         user.email = "save-account@example.com";
@@ -517,7 +518,7 @@ public class AccountResourceTest {
     }
 
     @Test
-    public void testSaveInvalidEmail() {
+    void testSaveInvalidEmail() {
         var user = new ManagedUserVM();
         user.login = "save-invalid-email";
         user.email = "save-invalid-email@example.com";
@@ -551,7 +552,7 @@ public class AccountResourceTest {
     }
 
     @Test
-    public void testSaveExistingEmail() {
+    void testSaveExistingEmail() {
         var user = new ManagedUserVM();
         user.login = "save-existing-email";
         user.email = "save-existing-email@example.com";
@@ -593,7 +594,7 @@ public class AccountResourceTest {
     }
 
     @Test
-    public void testSaveExistingEmailAndLogin() {
+    void testSaveExistingEmailAndLogin() {
         var user = new ManagedUserVM();
         user.login = "save-existing-email-and-login";
         user.email = "save-existing-email-and-login@example.com";
@@ -627,7 +628,7 @@ public class AccountResourceTest {
     }
 
     @Test
-    public void testChangePasswordWrongExistingPassword() {
+    void testChangePasswordWrongExistingPassword() {
         var user = new ManagedUserVM();
         user.login = "change-password-wrong-existing-password";
         user.email = "change-password-wrong-existing-password@example.com";
@@ -652,7 +653,7 @@ public class AccountResourceTest {
     }
 
     @Test
-    public void testChangePassword() throws Exception {
+    void testChangePassword() throws Exception {
         var user = new ManagedUserVM();
         user.login = "change-password";
         user.email = "change-password@example.com";
@@ -677,7 +678,7 @@ public class AccountResourceTest {
     }
 
     @Test
-    public void testChangePasswordTooSmall() {
+    void testChangePasswordTooSmall() {
         var user = new ManagedUserVM();
         user.login = "change-password-too-small";
         user.email = "change-password-too-small@example.com";
@@ -702,7 +703,7 @@ public class AccountResourceTest {
     }
 
     @Test
-    public void testChangePasswordTooLong() {
+    void testChangePasswordTooLong() {
         var user = new ManagedUserVM();
         user.login = "change-password-too-long";
         user.email = "change-password-too-long@example.com";
@@ -727,7 +728,7 @@ public class AccountResourceTest {
     }
 
     @Test
-    public void testChangePasswordEmpty() {
+    void testChangePasswordEmpty() {
         var user = new ManagedUserVM();
         user.login = "change-password-empty";
         user.email = "change-password-empty@example.com";
@@ -752,7 +753,7 @@ public class AccountResourceTest {
     }
 
     @Test
-    public void testRequestPasswordReset() {
+    void testRequestPasswordReset() {
         var user = new ManagedUserVM();
         user.login = "password-reset";
         user.email = "password-reset@example.com";
@@ -772,7 +773,7 @@ public class AccountResourceTest {
     }
 
     @Test
-    public void testRequestPasswordResetUpperCaseEmail() throws Exception {
+    void testRequestPasswordResetUpperCaseEmail() throws Exception {
         var user = new ManagedUserVM();
         user.login = "password-reset";
         user.email = "password-reset@example.com";
@@ -792,7 +793,7 @@ public class AccountResourceTest {
     }
 
     @Test
-    public void testRequestPasswordResetWrongEmail() {
+    void testRequestPasswordResetWrongEmail() {
         var user = new ManagedUserVM();
         user.login = "password-reset";
         user.email = "password-reset@example.com";
@@ -812,7 +813,7 @@ public class AccountResourceTest {
     }
 
     @Test
-    public void testFinishPasswordReset() {
+    void testFinishPasswordReset() {
         var user = new ManagedUserVM();
         user.login = "finish-password-reset";
         user.email = "finish-password-reset@example.com";
@@ -854,7 +855,7 @@ public class AccountResourceTest {
     }
 
     @Test
-    public void testFinishPasswordResetTooSmall() {
+    void testFinishPasswordResetTooSmall() {
         var user = new ManagedUserVM();
         user.login = "finish-password-reset-too-small";
         user.email = "finish-password-reset-too-small@example.com";
@@ -896,7 +897,7 @@ public class AccountResourceTest {
     }
 
     @Test
-    public void testFinishPasswordResetWrongKey() throws Exception {
+    void testFinishPasswordResetWrongKey() throws Exception {
         var keyAndPassword = new KeyAndPasswordVM();
         keyAndPassword.key = "wrong reset key";
         keyAndPassword.newPassword = "new password";

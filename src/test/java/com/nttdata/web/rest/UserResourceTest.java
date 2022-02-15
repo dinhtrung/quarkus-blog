@@ -1,14 +1,5 @@
 package com.nttdata.web.rest;
 
-import static io.restassured.RestAssured.get;
-import static io.restassured.RestAssured.given;
-import static io.restassured.config.ObjectMapperConfig.objectMapperConfig;
-import static javax.ws.rs.core.HttpHeaders.CONTENT_TYPE;
-import static javax.ws.rs.core.MediaType.APPLICATION_JSON;
-import static javax.ws.rs.core.Response.Status.*;
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.hamcrest.Matchers.*;
-
 import com.nttdata.TestUtil;
 import com.nttdata.domain.Authority;
 import com.nttdata.domain.User;
@@ -18,14 +9,24 @@ import com.nttdata.service.mapper.UserMapper;
 import com.nttdata.web.rest.vm.ManagedUserVM;
 import io.quarkus.test.junit.QuarkusTest;
 import io.restassured.RestAssured;
-import java.time.Instant;
-import java.util.Set;
-import javax.inject.Inject;
+import org.apache.commons.lang3.RandomStringUtils;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+
 import javax.transaction.Transactional;
 import javax.ws.rs.core.HttpHeaders;
+import java.time.Instant;
+import java.util.Set;
 
-import org.apache.commons.lang3.RandomStringUtils;
-import org.junit.jupiter.api.*;
+import static io.restassured.RestAssured.get;
+import static io.restassured.RestAssured.given;
+import static io.restassured.config.ObjectMapperConfig.objectMapperConfig;
+import static javax.ws.rs.core.HttpHeaders.CONTENT_TYPE;
+import static javax.ws.rs.core.MediaType.APPLICATION_JSON;
+import static javax.ws.rs.core.Response.Status.*;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.hamcrest.Matchers.*;
 
 @QuarkusTest
 public class UserResourceTest {

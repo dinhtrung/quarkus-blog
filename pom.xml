@@ -183,6 +183,7 @@
         <dependency>
             <groupId>de.flapdoodle.embed</groupId>
             <artifactId>de.flapdoodle.embed.mongo</artifactId>
+            <version>3.3.1</version>
             <scope>test</scope>
         </dependency>
         <!-- jhipster-needle-maven-add-dependency -->
@@ -335,7 +336,7 @@
                                     8 to
                                     13.
                                 </message>
-                                <version>[1.8,14)</version>
+                                <version>[1.8,19)</version>
                             </requireJavaVersion>
                         </rules>
                     </configuration>
