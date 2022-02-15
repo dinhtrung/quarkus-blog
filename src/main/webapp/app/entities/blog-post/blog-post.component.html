@@ -1,0 +1,102 @@
+<div>
+    <h2 id="page-heading">
+        <span jhiTranslate="sampleApp.blogPost.home.title">Blog Posts</span>
+
+        <button id="jh-create-entity" class="btn btn-primary float-right jh-create-entity create-blog-post" [routerLink]="['/blog-post/new']">
+            <fa-icon icon="plus"></fa-icon>
+            <span  jhiTranslate="sampleApp.blogPost.home.createLabel">
+            Create a new Blog Post
+            </span>
+        </button>
+    </h2>
+
+    <jhi-alert-error></jhi-alert-error>
+
+    <jhi-alert></jhi-alert>
+
+    <div class="alert alert-warning" id="no-result" *ngIf="blogPosts?.length === 0">
+        <span jhiTranslate="sampleApp.blogPost.home.notFound">No blogPosts found</span>
+    </div>
+
+    <div class="table-responsive" id="entities" *ngIf="blogPosts && blogPosts.length > 0">
+        <table class="table table-striped" aria-describedby="page-heading">
+            <thead>
+                <tr jhiSort [(predicate)]="predicate" [(ascending)]="ascending" [callback]="loadPage.bind(this)">
+                    <th scope="col"  jhiSortBy="id"><span jhiTranslate="global.field.id">ID</span> <fa-icon icon="sort"></fa-icon></th>
+                    <th scope="col"  jhiSortBy="title"><span jhiTranslate="sampleApp.blogPost.title">Title</span> <fa-icon icon="sort"></fa-icon></th>
+                    <th scope="col"  jhiSortBy="summary"><span jhiTranslate="sampleApp.blogPost.summary">Summary</span> <fa-icon icon="sort"></fa-icon></th>
+                    <th scope="col"  jhiSortBy="figure"><span jhiTranslate="sampleApp.blogPost.figure">Figure</span> <fa-icon icon="sort"></fa-icon></th>
+                    <th scope="col"  jhiSortBy="content"><span jhiTranslate="sampleApp.blogPost.content">Content</span> <fa-icon icon="sort"></fa-icon></th>
+                    <th scope="col"  jhiSortBy="category"><span jhiTranslate="sampleApp.blogPost.category">Category</span> <fa-icon icon="sort"></fa-icon></th>
+                    <th scope="col"  jhiSortBy="slug"><span jhiTranslate="sampleApp.blogPost.slug">Slug</span> <fa-icon icon="sort"></fa-icon></th>
+                    <th scope="col"  jhiSortBy="state"><span jhiTranslate="sampleApp.blogPost.state">State</span> <fa-icon icon="sort"></fa-icon></th>
+                    <th scope="col"  jhiSortBy="weight"><span jhiTranslate="sampleApp.blogPost.weight">Weight</span> <fa-icon icon="sort"></fa-icon></th>
+                    <th scope="col"  jhiSortBy="publishedAt"><span jhiTranslate="sampleApp.blogPost.publishedAt">Published At</span> <fa-icon icon="sort"></fa-icon></th>
+                    <th scope="col"  jhiSortBy="createdAt"><span jhiTranslate="sampleApp.blogPost.createdAt">Created At</span> <fa-icon icon="sort"></fa-icon></th>
+                    <th scope="col"  jhiSortBy="lastModifiedAt"><span jhiTranslate="sampleApp.blogPost.lastModifiedAt">Last Modified At</span> <fa-icon icon="sort"></fa-icon></th>
+                    <th scope="col"  jhiSortBy="createdBy"><span jhiTranslate="sampleApp.blogPost.createdBy">Created By</span> <fa-icon icon="sort"></fa-icon></th>
+                    <th scope="col"  jhiSortBy="lastModifiedBy"><span jhiTranslate="sampleApp.blogPost.lastModifiedBy">Last Modified By</span> <fa-icon icon="sort"></fa-icon></th>
+                    <th scope="col"  jhiSortBy="tags"><span jhiTranslate="sampleApp.blogPost.tags">Tags</span> <fa-icon icon="sort"></fa-icon></th>
+                    <th scope="col"></th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let blogPost of blogPosts ;trackBy: trackId">
+                    <td><a [routerLink]="['/blog-post', blogPost.id, 'view']">{{ blogPost.id }}</a></td>
+                    <td>{{ blogPost.title }}</td>
+                    <td>{{ blogPost.summary }}</td>
+                    <td>
+                        <a *ngIf="blogPost.figure" (click)="openFile(blogPost.figureContentType, blogPost.figure)">
+                            <img [src]="'data:' + blogPost.figureContentType + ';base64,' + blogPost.figure" style="max-height: 30px;" alt="blogPost image"/>
+                        </a>
+                        <span *ngIf="blogPost.figure">{{ blogPost.figureContentType }}, {{ byteSize(blogPost.figure) }}</span>
+                    </td>
+                    <td>{{ blogPost.content }}</td>
+                    <td>{{ blogPost.category }}</td>
+                    <td>{{ blogPost.slug }}</td>
+                    <td>{{ blogPost.state }}</td>
+                    <td>{{ blogPost.weight }}</td>
+                    <td>{{ blogPost.publishedAt | date:'mediumDate' }}</td>
+                    <td>{{ blogPost.createdAt | date:'medium' }}</td>
+                    <td>{{ blogPost.lastModifiedAt | date:'medium' }}</td>
+                    <td>{{ blogPost.createdBy }}</td>
+                    <td>{{ blogPost.lastModifiedBy }}</td>
+                    <td>{{ blogPost.tags }}</td>
+                    <td class="text-right">
+                        <div class="btn-group">
+                            <button type="submit"
+                                    [routerLink]="['/blog-post', blogPost.id, 'view']"
+                                    class="btn btn-info btn-sm">
+                                <fa-icon icon="eye"></fa-icon>
+                                <span class="d-none d-md-inline" jhiTranslate="entity.action.view">View</span>
+                            </button>
+
+                            <button type="submit"
+                                    [routerLink]="['/blog-post', blogPost.id, 'edit']"
+                                    class="btn btn-primary btn-sm">
+                                <fa-icon icon="pencil-alt"></fa-icon>
+                                <span class="d-none d-md-inline" jhiTranslate="entity.action.edit">Edit</span>
+                            </button>
+
+                            <button type="submit" (click)="delete(blogPost)"
+                                    class="btn btn-danger btn-sm">
+                                <fa-icon icon="times"></fa-icon>
+                                <span class="d-none d-md-inline" jhiTranslate="entity.action.delete">Delete</span>
+                            </button>
+                        </div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <div *ngIf="blogPosts && blogPosts.length > 0">
+        <div class="row justify-content-center">
+            <jhi-item-count [page]="page" [total]="totalItems" [itemsPerPage]="itemsPerPage"></jhi-item-count>
+        </div>
+
+        <div class="row justify-content-center">
+            <ngb-pagination [collectionSize]="totalItems" [(page)]="ngbPaginationPage" [pageSize]="itemsPerPage" [maxSize]="5" [rotate]="true" [boundaryLinks]="true" (pageChange)="loadPage($event)"></ngb-pagination>
+        </div>
+    </div>
+</div>

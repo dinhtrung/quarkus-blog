@@ -1,0 +1,87 @@
+<div class="row justify-content-center">
+    <div class="col-8">
+        <div *ngIf="blogPost">
+            <h2><span jhiTranslate="sampleApp.blogPost.detail.title">Blog Post</span> {{ blogPost.id }}</h2>
+
+            <hr>
+
+            <jhi-alert-error></jhi-alert-error>
+
+            <dl class="row-md jh-entity-details">
+                <dt><span jhiTranslate="sampleApp.blogPost.title">Title</span></dt>
+                <dd>
+                    <span>{{ blogPost.title }}</span>
+                </dd>
+                <dt><span jhiTranslate="sampleApp.blogPost.summary">Summary</span></dt>
+                <dd>
+                    <span>{{ blogPost.summary }}</span>
+                </dd>
+                <dt><span jhiTranslate="sampleApp.blogPost.figure">Figure</span></dt>
+                <dd>
+                    <div *ngIf="blogPost.figure">
+                        <a (click)="openFile(blogPost.figureContentType, blogPost.figure)">
+                            <img [src]="'data:' + blogPost.figureContentType + ';base64,' + blogPost.figure" style="max-width: 100%;" alt="blogPost image"/>
+                        </a>
+                        {{ blogPost.figureContentType }}, {{ byteSize(blogPost.figure) }}
+                    </div>
+                </dd>
+                <dt><span jhiTranslate="sampleApp.blogPost.content">Content</span></dt>
+                <dd>
+                    <span>{{ blogPost.content }}</span>
+                </dd>
+                <dt><span jhiTranslate="sampleApp.blogPost.category">Category</span></dt>
+                <dd>
+                    <span>{{ blogPost.category }}</span>
+                </dd>
+                <dt><span jhiTranslate="sampleApp.blogPost.slug">Slug</span></dt>
+                <dd>
+                    <span>{{ blogPost.slug }}</span>
+                </dd>
+                <dt><span jhiTranslate="sampleApp.blogPost.state">State</span></dt>
+                <dd>
+                    <span>{{ blogPost.state }}</span>
+                </dd>
+                <dt><span jhiTranslate="sampleApp.blogPost.weight">Weight</span></dt>
+                <dd>
+                    <span>{{ blogPost.weight }}</span>
+                </dd>
+                <dt><span jhiTranslate="sampleApp.blogPost.publishedAt">Published At</span></dt>
+                <dd>
+                    <span>{{ blogPost.publishedAt }}</span>
+                </dd>
+                <dt><span jhiTranslate="sampleApp.blogPost.createdAt">Created At</span></dt>
+                <dd>
+                    <span>{{ blogPost.createdAt }}</span>
+                </dd>
+                <dt><span jhiTranslate="sampleApp.blogPost.lastModifiedAt">Last Modified At</span></dt>
+                <dd>
+                    <span>{{ blogPost.lastModifiedAt }}</span>
+                </dd>
+                <dt><span jhiTranslate="sampleApp.blogPost.createdBy">Created By</span></dt>
+                <dd>
+                    <span>{{ blogPost.createdBy }}</span>
+                </dd>
+                <dt><span jhiTranslate="sampleApp.blogPost.lastModifiedBy">Last Modified By</span></dt>
+                <dd>
+                    <span>{{ blogPost.lastModifiedBy }}</span>
+                </dd>
+                <dt><span jhiTranslate="sampleApp.blogPost.tags">Tags</span></dt>
+                <dd>
+                    <span>{{ blogPost.tags }}</span>
+                </dd>
+            </dl>
+
+            <button type="submit"
+                    (click)="previousState()"
+                    class="btn btn-info">
+                <fa-icon icon="arrow-left"></fa-icon>&nbsp;<span jhiTranslate="entity.action.back">Back</span>
+            </button>
+
+            <button type="button"
+                    [routerLink]="['/blog-post', blogPost.id, 'edit']"
+                    class="btn btn-primary">
+                <fa-icon icon="pencil-alt"></fa-icon>&nbsp;<span jhiTranslate="entity.action.edit">Edit</span>
+            </button>
+        </div>
+    </div>
+</div>
