@@ -25,6 +25,7 @@
         <!-- Dependency properties -->
         <quarkus.platform.version>2.7.1.Final</quarkus.platform.version>
         <mapstruct.version>1.4.2.Final</mapstruct.version>
+        <openapi-generator.version>5.3.1</openapi-generator.version>
         <archunit-junit5.version>0.22.0</archunit-junit5.version>
 
         <!-- Plugin versions -->
@@ -38,6 +39,7 @@
         <maven-resources-plugin.version>3.2.0</maven-resources-plugin.version>
         <maven-surefire-plugin.version>3.0.0-M5</maven-surefire-plugin.version>
         <maven-checkstyle.version>3.1.2</maven-checkstyle.version>
+        <maven-build-helper.version>3.3.0</maven-build-helper.version>
         <frontend-maven-plugin.version>1.6</frontend-maven-plugin.version>
         <git-commit-id-plugin.version>5.0.0</git-commit-id-plugin.version>
         <jacoco-maven-plugin.version>0.8.7</jacoco-maven-plugin.version>
@@ -134,6 +136,11 @@
             <artifactId>mapstruct-processor</artifactId>
             <version>${mapstruct.version}</version>
             <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>io.swagger.parser.v3</groupId>
+            <artifactId>swagger-parser</artifactId>
+            <version>2.0.30</version>
         </dependency>
         <dependency>
             <groupId>io.quarkus</groupId>
@@ -467,6 +474,55 @@
                 <version>${quarkus-plugin.version}</version>
             </plugin>
             <!-- jhipster-needle-maven-add-plugin -->
+
+            <!-- API first development: https://openapi-generator.tech/docs/generators/jaxrs-spec -->
+            <plugin>
+                <groupId>org.openapitools</groupId>
+                <artifactId>openapi-generator-maven-plugin</artifactId>
+                <version>${openapi-generator.version}</version>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>generate</goal>
+                        </goals>
+                        <configuration>
+                            <inputSpec>${project.basedir}/src/main/resources/openapi/api.yaml</inputSpec>
+                            <generatorName>jaxrs-spec</generatorName>
+                            <configOptions>
+                                <library>quarkus</library>
+                                <java8>true</java8>
+                                <generatePom>false</generatePom>
+                                <interfaceOnly>true</interfaceOnly>
+                                <openApiNullable>false</openApiNullable>
+                                <supportAsync>true</supportAsync>
+                            </configOptions>
+                            <modelPackage>com.nttdata.petstore.domain</modelPackage>
+                            <apiPackage>com.nttdata.petstore.rest</apiPackage>
+                            <generateApiDocumentation>false</generateApiDocumentation>
+                            <withXml>false</withXml>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>build-helper-maven-plugin</artifactId>
+                <version>${maven-build-helper.version}</version>
+                <executions>
+                    <execution>
+                        <id>add-source</id>
+                        <phase>generate-sources</phase>
+                        <goals>
+                            <goal>add-source</goal>
+                        </goals>
+                        <configuration>
+                            <sources>
+                                <source>target/generated-sources</source>
+                            </sources>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
         </plugins>
     </build>
     <profiles>
